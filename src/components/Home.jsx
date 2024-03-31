@@ -1,13 +1,31 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
 import Footer from "./Footer";
 import CoffeeCard from "./sharedComponents/CoffeeCard";
+import axios from 'axios';
+import { AuthContext } from "../../providers/AuthProvider";
 const Home = () => {
   const coffeeImageData = useLoaderData();
   const [coffeeData, setCoffeeData] = useState([]);
+  const [userDetails,setUserDetails] = useState([])
+  const {user} = useContext(AuthContext)
+  useEffect(()=>{
+    axios.get(`http://localhost:5000/user/${user?.email}`)
+    .then(res=>{
+        console.log("user details: ",res)
+        setUserDetails(res)
+    })
+    .catch(err=>{
+        console.log('err')
+    })
+  },[user])
+
   useEffect(() => {
-    setCoffeeData(coffeeImageData);
+    const timer = setTimeout(() => {
+      setCoffeeData(coffeeImageData);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [coffeeImageData]);
 
   const handleDelete = _id => {
@@ -46,11 +64,17 @@ const Home = () => {
   useEffect(() => {
     fetch("https://api.jsonbin.io/v3/b/6554f2940574da7622c70a79")
       .then(res => res.json())
-      .then(data => setCoffeeImage(data.record));
+      .then(data =>{
+        console.log(data)
+        setCoffeeImage(data.record)
+      } );
   }, []);
-  // console.log(coffeeImageData);
+
+  
+
+  // console.log("dd",coffeeData,userDetails);
   return (
-    <div className="font-rancho bg-white">
+    <div className="font-rancho bg-white max-w-7xl m-auto">
       {/* <Header></Header> */}
       {/* <h1>home</h1> */}
       <div className="flex justify-center items-center flex-col gap-4 py-14">
@@ -65,12 +89,13 @@ const Home = () => {
         </Link>
       </div>
       <div className="grid grid-cols-2 gap-20 px-32">
-        {coffeeData.map(eachData => (
+        {userDetails && coffeeData?.map(eachData => (
           <CoffeeCard
-            key={eachData._id}
-            eachData={eachData}
-            handleDelete={handleDelete}
-          ></CoffeeCard>
+         key={eachData._id}
+         eachData={eachData}
+         userDetails={userDetails}
+         handleDelete={handleDelete}
+       ></CoffeeCard>
         ))}
       </div>
       <div className="flex flex-col justify-center items-center my-8">
@@ -80,11 +105,11 @@ const Home = () => {
         </h3>
       </div>
       <div className="flex flex-wrap justify-center items-center gap-8">
-        {coffeeImage.map(eachData => (
+        {coffeeImage?.map(eachData => (
           <img
-            key={eachData.key}
+            key={eachData?.key}
             className="w-[312px] h-[350px]"
-            src={eachData.image}
+            src={eachData?.image}
             alt=""
           />
         ))}

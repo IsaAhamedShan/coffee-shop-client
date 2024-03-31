@@ -20,18 +20,18 @@ console.log("signinsuccessis ",signInSuccess)
       <li className="px-2 ">
         <NavLink to="/"><p className="font-raleway ">Home</p></NavLink>
       </li>
-      {signInSuccess ? null : (
+      {user ? null : (
         <li className="px-2">
           <NavLink to="/signin"><p className="font-raleway">Sign In</p></NavLink>
         </li>
       )}
       {
-        signInSuccess? <li className="px-2">
+        user? <li className="px-2">
         <NavLink to="/cart"><p className="font-raleway">My Cart</p></NavLink>
       </li> : null
       }
       {
-        signInSuccess? <li className="px-2">
+        user? <li className="px-2">
         <NavLink to="/users"><p className="font-raleway">Users</p></NavLink>
       </li> : null
       }
@@ -39,7 +39,7 @@ console.log("signinsuccessis ",signInSuccess)
     </>
   );
   return (
-    <div className="navbar bg-[#1F0E0B]">
+    <div className="navbar bg-[#1F0E0B] px-10">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -82,7 +82,7 @@ console.log("signinsuccessis ",signInSuccess)
         <ul className="menu menu-horizontal px-1">{navList}</ul>
       </div>
       <div className="navbar-end">
-        {signInSuccess ? (
+        {user ? (
           <>
             <p className="pr-4">{user.displayName}</p>
             <NavLink><button className="btn btn-outline" onClick={handleLogOut} ><p className="font-raleway">Log Out</p></button></NavLink>

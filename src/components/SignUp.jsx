@@ -31,21 +31,21 @@ const SignUp = () => {
     console.log(username, password, email);
     createUser(email, password)
       .then(result => {
-        const creationTime = result.user?.metadata?.creationTime;
-        const user = { email, creationTime };
-        fetch("http://localhost:5000/user", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(user),
-        })
-          .then(res => {
-            console.log(res);
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        // const creationTime = result.user?.metadata?.creationTime;
+        // const user = { email, creationTime };
+        // fetch("http://localhost:5000/user", {
+        //   method: "POST",
+        //   headers: {
+        //     "content-type": "application/json",
+        //   },
+        //   body: JSON.stringify(user),
+        // })
+        //   .then(res => {
+        //     console.log(res);
+        //   })
+        //   .catch(error => {
+        //     console.log(error);
+        //   });
 
         console.log(auth.currentUser.displayName);
 
