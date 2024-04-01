@@ -4,7 +4,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 const Navbar = () => {
   const logo = "../../public/logo1.png";
   const bg = "../../public/Rectangle 1.png";
-  const { user, signInSuccess,logOut,setSignInSuccess } = useContext(AuthContext);
+  const { user, signInSuccess,logOut,setSignInSuccess,userDetails } = useContext(AuthContext);
   const handleLogOut =()=>
   logOut()
   .then(successLogOut =>{
@@ -31,7 +31,7 @@ console.log("signinsuccessis ",signInSuccess)
       </li> : null
       }
       {
-        user? <li className="px-2">
+        userDetails.data.admin? <li className="px-2">
         <NavLink to="/users"><p className="font-raleway">Users</p></NavLink>
       </li> : null
       }

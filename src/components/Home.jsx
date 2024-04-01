@@ -8,18 +8,18 @@ import { AuthContext } from "../../providers/AuthProvider";
 const Home = () => {
   const coffeeImageData = useLoaderData();
   const [coffeeData, setCoffeeData] = useState([]);
-  const [userDetails,setUserDetails] = useState([])
-  const {user} = useContext(AuthContext)
-  useEffect(()=>{
-    axios.get(`http://localhost:5000/user/${user?.email}`)
-    .then(res=>{
-        console.log("user details: ",res)
-        setUserDetails(res)
-    })
-    .catch(err=>{
-        console.log('err')
-    })
-  },[user])
+  // const [userDetails,setUserDetails] = useState([])
+  const {user,userDetails} = useContext(AuthContext)
+  // useEffect(()=>{
+  //   axios.get(`http://localhost:5000/user/${user?.email}`)
+  //   .then(res=>{
+  //       console.log("user details: ",res)
+  //       setUserDetails(res)
+  //   })
+  //   .catch(err=>{
+  //       console.log('err')
+  //   })
+  // },[user])
 
   useEffect(() => {
     const timer = setTimeout(() => {

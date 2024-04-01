@@ -9,6 +9,7 @@ import {
   signOut,
 } from "firebase/auth";
 import app from "../firebase/firebase.config";
+import axios from 'axios';
 
 const auth = getAuth(app);
 
@@ -18,6 +19,7 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [signInSuccess, setSignInSuccess] = useState(false);
   const [cartItem, setCartItem] = useState([]);
+  const [userDetails,setUserDetails] = useState([])
   const addToCart = _id => {
     console.log(_id);
     const cart = [...cartItem];
@@ -45,10 +47,22 @@ const AuthProvider = ({ children }) => {
       setUser(currentUser);
       console.log("current User: ", currentUser);
     });
+    
+
     return () => {
       unsubscribe();
     };
   }, []);
+  useEffect(()=>{
+    axios.get(`http://localhost:5000/user/${user?.email}`)
+    .then(res=>{
+        console.log("user details: ",res)
+        setUserDetails(res)
+    })
+    .catch(err=>{
+        console.log('err')
+    })
+  },[user])
   const authInfo = {
     user,
     auth,
@@ -62,6 +76,7 @@ const AuthProvider = ({ children }) => {
     setCartItem,
     addToCart,
     logInWithGoogle,
+    userDetails
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
