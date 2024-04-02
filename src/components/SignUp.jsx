@@ -7,11 +7,9 @@ import { AuthContext } from "../../providers/AuthProvider";
 const SignUp = () => {
   const [showPass, setShowPass] = useState(false);
   const coffeeContext = useContext(AuthContext);
-  const { createUser, auth } = coffeeContext;
+  const { createUser, auth,logOut } = coffeeContext;
   const navigate = useNavigate()
-  const goToSignIn = ()=>{
-    navigate("/signin")
-  }
+  
   const createSuccessful = () => toast.success("Account Created Successfully");
   const createUnsuccessful = () => toast.error("Something is wrong.Try again");
   const passwordValidationError = () =>
@@ -31,21 +29,21 @@ const SignUp = () => {
     console.log(username, password, email);
     createUser(email, password)
       .then(result => {
-        // const creationTime = result.user?.metadata?.creationTime;
-        // const user = { email, creationTime };
-        // fetch("http://localhost:5000/user", {
-        //   method: "POST",
-        //   headers: {
-        //     "content-type": "application/json",
-        //   },
-        //   body: JSON.stringify(user),
-        // })
-        //   .then(res => {
-        //     console.log(res);
-        //   })
-        //   .catch(error => {
-        //     console.log(error);
-        //   });
+        const creationTime = result.user?.metadata?.creationTime;
+        const user = { email, creationTime };
+        fetch("http://localhost:5000/user", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        })
+          .then(res => {
+            console.log(res);
+          })
+          .catch(error => {
+            console.log(error);
+          });
 
         console.log(auth.currentUser.displayName);
 
@@ -59,12 +57,14 @@ const SignUp = () => {
           .catch(() =>
             console.log("display name couldn't set, something is wrong")
           );
-        console.log(
-          "after singin display name :",
-          auth.currentUser.displayName
-        );
+        // console.log(
+        //   "after singin display name :",
+        //   auth.currentUser.displayName
+        // );
         createSuccessful();
-        setTimeout(goToSignIn,2000)
+        logOut();
+        navigate("/signin")
+        
         // console.log("success");
       })
       .catch(error => {

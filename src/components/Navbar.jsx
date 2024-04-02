@@ -4,38 +4,46 @@ import { AuthContext } from "../../providers/AuthProvider";
 const Navbar = () => {
   const logo = "../../public/logo1.png";
   const bg = "../../public/Rectangle 1.png";
-  const { user, signInSuccess,logOut,setSignInSuccess,userDetails } = useContext(AuthContext);
-  const handleLogOut =()=>
-  logOut()
-  .then(successLogOut =>{
-    console.log(successLogOut)
-    setSignInSuccess(false)
-  })
-  .catch(error => console.log(error))
-  useEffect(()=>{
-console.log("signinsuccessis ",signInSuccess)
-  },[user])
+  const {user, signInSuccess, logOut, setSignInSuccess, userDetails } =
+    useContext(AuthContext);
+  const handleLogOut = () =>
+    logOut()
+      .then(successLogOut => {
+        console.log(successLogOut);
+        setSignInSuccess(false);
+      })
+      .catch(error => console.log(error));
+  useEffect(() => {
+    console.log("signinsuccessis ", signInSuccess);
+  }, [user]);
   const navList = (
     <>
       <li className="px-2 ">
-        <NavLink to="/"><p className="font-raleway ">Home</p></NavLink>
+        <NavLink to="/">
+          <p className="font-raleway ">Home</p>
+        </NavLink>
       </li>
       {user ? null : (
         <li className="px-2">
-          <NavLink to="/signin"><p className="font-raleway">Sign In</p></NavLink>
+          <NavLink to="/signin">
+            <p className="font-raleway">Sign In</p>
+          </NavLink>
         </li>
       )}
-      {
-        user? <li className="px-2">
-        <NavLink to="/cart"><p className="font-raleway">My Cart</p></NavLink>
-      </li> : null
-      }
-      {
-        userDetails.data.admin? <li className="px-2">
-        <NavLink to="/users"><p className="font-raleway">Users</p></NavLink>
-      </li> : null
-      }
-      
+      {user ? (
+        <li className="px-2">
+          <NavLink to="/cart">
+            <p className="font-raleway">My Cart</p>
+          </NavLink>
+        </li>
+      ) : null}
+      {userDetails.data.admin ? (
+        <li className="px-2">
+          <NavLink to="/users">
+            <p className="font-raleway">Users</p>
+          </NavLink>
+        </li>
+      ) : null}
     </>
   );
   return (
@@ -85,10 +93,16 @@ console.log("signinsuccessis ",signInSuccess)
         {user ? (
           <>
             <p className="pr-4">{user.displayName}</p>
-            <NavLink><button className="btn btn-outline" onClick={handleLogOut} ><p className="font-raleway">Log Out</p></button></NavLink>
+            <NavLink>
+              <button className="btn btn-outline" onClick={handleLogOut}>
+                <p className="font-raleway">Log Out</p>
+              </button>
+            </NavLink>
           </>
         ) : (
-          <NavLink to="/signup"><p className="font-raleway">Sign Up</p></NavLink>
+          <NavLink to="/signup">
+            <p className="font-raleway">Sign Up</p>
+          </NavLink>
         )}
       </div>
     </div>
