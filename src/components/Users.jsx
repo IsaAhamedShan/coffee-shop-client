@@ -41,8 +41,8 @@ const Users = () => {
 
   console.log(usersData);
   return (
-    <div className="overflow-x-auto bg-[#F4F3F0]">
-      <table className="table ">
+    <div className="overflow-x-auto bg-[#F4F3F0] my-20 ">
+      <table className="table max-w-7xl mx-auto bg-[#e7e7e7]">
         {/* head */}
         <thead>
           <tr className="text-black">
@@ -56,7 +56,7 @@ const Users = () => {
         </thead>
         <tbody>
           {userList.map((eachData, index) => (
-            <tr key={eachData._id} className="bg-[#F4F3F0] my-4">
+            <tr key={eachData._id} className="bg-[#e7e7e7] my-4">
               <th>{index + 1}</th>
               <td>{eachData.email}</td>
               <td>{eachData.creationTime}</td>

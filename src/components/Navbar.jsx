@@ -37,7 +37,7 @@ const Navbar = () => {
           </NavLink>
         </li>
       ) : null}
-      {userDetails.data.admin ? (
+      {userDetails.data && userDetails.data.admin ? (
         <li className="px-2">
           <NavLink to="/users">
             <p className="font-raleway">Users</p>
