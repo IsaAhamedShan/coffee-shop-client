@@ -15,9 +15,9 @@ const saveCartToLocalStorage = cart => {
   const cartStringified = JSON.stringify(cart);
   localStorage.setItem("coffeeCart", cartStringified);
 };
-const deleteItemFromLocalStorage = item => {
+const deleteItemFromLocalStorage = _id => {
   const cart = getItem();
-  const _id = item._id;
+  // const _id = _id;
   const updatedCart = cart.filter(eachItem => eachItem !== _id);
   saveCartToLocalStorage(updatedCart);
 };

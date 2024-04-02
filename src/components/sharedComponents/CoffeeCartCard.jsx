@@ -1,6 +1,7 @@
-import React from "react";
+import { RxCross2 } from "react-icons/rx";
 
-const CoffeeCartCard = ({ eachItem }) => {
+import { deleteItemFromLocalStorage } from "../coffeeCartLocalStorage";
+const CoffeeCartCard = ({ eachItem,handleDeleteCartItem }) => {
   const { _id, name, chef, taste, category, details, photo, price } = eachItem;
 
   return (
@@ -10,7 +11,7 @@ const CoffeeCartCard = ({ eachItem }) => {
         <div className="sm:ml-4 sm:flex sm:justify-around sm:items-center sm:gap-36 sm:w-full ">
           <div className="mt-5 sm:mt-0">
             <h2 className="text-lg font-bold text-gray-900">{name}</h2>
-            <p className="mt-1 text-xs text-gray-700">36EU - 4US</p>
+            <p className="mt-1 text-xs text-gray-700">${price}</p>
           </div>
           <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
             <div className="flex items-center border-gray-100">
@@ -31,20 +32,7 @@ const CoffeeCartCard = ({ eachItem }) => {
             </div>
             <div className="flex items-center space-x-4">
               <p className="text-sm">${price}</p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="h-5 w-5 cursor-pointer duration-150 hover:text-red-500"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <RxCross2 className="hover:scale-150 duration-150 cursor-pointer" onClick={()=>handleDeleteCartItem(_id)} />
             </div>
           </div>
         </div>
