@@ -133,7 +133,7 @@ const Cart = () => {
               <div className="space-y-6">
                 <div className="flex justify-between">
                   <span>Total</span>
-                  <span className="font-semibold">$22.70</span>
+                  <span className="font-semibold">${total}</span>
                 </div>
                 <button
                   type="button"

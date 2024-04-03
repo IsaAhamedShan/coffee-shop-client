@@ -2,16 +2,20 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { addItemToLocalStorage } from "../coffeeCartLocalStorage";
-
+import toast, { Toaster } from 'react-hot-toast';
 const CoffeeCard = ({ eachData,userDetails, handleDelete }) => {
   const { _id, name, chef, taste, supplier, category, details, photo, price } =
     eachData;
   const { addToCart, user } = useContext(AuthContext);
   console.log("userDetails: ",userDetails)
   console.log("eachData: ",eachData)
- 
+ let addedSuccessfully = ()=> toast.success("Added to Cart")
   return (
     <div className="grid grid-cols-6">
+      <Toaster
+  position="top-right"
+  reverseOrder={false}
+/>
       <div className="col-span-2">
         <img src={photo} alt="" />
       </div>
@@ -26,9 +30,10 @@ const CoffeeCard = ({ eachData,userDetails, handleDelete }) => {
             {" "}
             <img
               src="../../../public/Group10.png"
-              className="w-[40px] h-[40px] bg-slate-300 rounded-lg p-2"
+              className="w-[40px] h-[40px] bg-slate-300 rounded-lg p-2 hover:scale-105"
               onClick={() => {
                 addItemToLocalStorage(_id);
+                addedSuccessfully()
               }}
               alt=""
             />
@@ -39,7 +44,7 @@ const CoffeeCard = ({ eachData,userDetails, handleDelete }) => {
             {" "}
             <img
               src="../../../public/Group 12.png"
-              className="w-[40px] h-[40px]"
+              className="w-[40px] h-[40px] hover:scale-105"
               alt=""
             />
           </Link>
@@ -48,7 +53,7 @@ const CoffeeCard = ({ eachData,userDetails, handleDelete }) => {
           {" "}
           <img
             src="../../../public/Group 14.png"
-            className="w-[40px] h-[40px]"
+            className="w-[40px] h-[40px] hover:scale-105"
             alt=""
           />
         </Link>
@@ -57,7 +62,7 @@ const CoffeeCard = ({ eachData,userDetails, handleDelete }) => {
             {" "}
             <img
               src="../../../public/Group 13.png"
-              className="w-[40px] h-[40px]"
+              className="w-[40px] h-[40px] hover:scale-105"
               alt=""
             />
           </Link>

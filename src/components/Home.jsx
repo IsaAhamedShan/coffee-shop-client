@@ -70,9 +70,6 @@ const Home = () => {
       } );
   }, []);
 
-  
-
-  // console.log("dd",coffeeData,userDetails);
   return (
     <div className="font-rancho bg-white max-w-7xl m-auto">
       {/* <Header></Header> */}
