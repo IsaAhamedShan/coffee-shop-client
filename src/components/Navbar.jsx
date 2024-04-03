@@ -4,7 +4,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 const Navbar = () => {
   const logo = "../../public/logo1.png";
   const bg = "../../public/Rectangle 1.png";
-  const {user, signInSuccess, logOut, setSignInSuccess, userDetails } =
+  const { user, signInSuccess, logOut, setSignInSuccess, userDetails } =
     useContext(AuthContext);
   const handleLogOut = () =>
     logOut()
@@ -44,6 +44,11 @@ const Navbar = () => {
           </NavLink>
         </li>
       ) : null}
+      <li className="px-2 block md:hidden">
+        <NavLink onClick={handleLogOut}>
+          <p className="font-raleway">Log Out</p>
+        </NavLink>
+      </li>
     </>
   );
   return (
@@ -93,8 +98,11 @@ const Navbar = () => {
         {user ? (
           <>
             <p className="pr-4">{user.displayName}</p>
-            <NavLink>
-              <button className="btn btn-outline" onClick={handleLogOut}>
+            <NavLink className="hidden lg:block">
+              <button
+                className="btn btn-outline rounded-sm btn-sm"
+                onClick={handleLogOut}
+              >
                 <p className="font-raleway">Log Out</p>
               </button>
             </NavLink>

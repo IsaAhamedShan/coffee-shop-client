@@ -1,15 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../providers/AuthProvider";
-import { deleteItemFromLocalStorage } from "./coffeeCartLocalStorage";
+import {
+  deleteItemFromLocalStorage,
+  getTotalCartValue,
+} from "./coffeeCartLocalStorage";
 import useCart from "./hooks/useCart";
 import CoffeeCartCard from "./sharedComponents/CoffeeCartCard";
 const Cart = () => {
   const { cartItem } = useContext(AuthContext);
   const [cart, refetch] = useCart();
-  console.log(cartItem);
+  // console.log(cartItem);
   const [filteredData, setFilteredData] = useState([]);
-  const [total, setTotal] = useState(null);
+
+  const [total, setTotal] = useState(getTotalCartValue());
+  // console.log(total)
   let handleDeleteCartItem = _id => {
     Swal.fire({
       title: "Are you sure?",
@@ -26,6 +31,8 @@ const Cart = () => {
       }
     });
   };
+
+
   useEffect(() => {
     fetch("http://localhost:5000/coffee")
       .then(res => res.json())
@@ -36,15 +43,11 @@ const Cart = () => {
         );
         console.log("fil: ", filteredData);
         setFilteredData(filteredData);
-        let sum = 0;
-        filteredData.forEach(
-          eachItem => (sum = sum + parseInt(eachItem.price))
-        );
-        setTotal(sum);
+        setTotal(getTotalCartValue());
       });
 
-    console.log("total ", total);
-  }, [cart, total]);
+    // console.log("total ", total);
+  }, [cart]);
 
   console.log("filterData: ", filteredData);
   return (
@@ -64,6 +67,7 @@ const Cart = () => {
                 <CoffeeCartCard
                   key={eachItem._id}
                   eachItem={eachItem}
+                  setTotal ={setTotal}
                   handleDeleteCartItem={handleDeleteCartItem}
                 ></CoffeeCartCard>
               ))}

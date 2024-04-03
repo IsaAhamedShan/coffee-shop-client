@@ -63,7 +63,7 @@ const Footer = () => {
 \
           </div>
             {/* <button className="btn btn-primary join-item ">Send Message</button> */}
-            <button className="btn btn-outline mb-0 font-rancho rounded-3xl text-xl text-[#331A15] hover:text-white hover:bg-[#331A15]">Send Message</button>
+            <button className="btn btn-outline mb-0 font-rancho rounded-md hover:rounded-3xl hover:duration-500 text-xl text-[#331A15] hover:text-white hover:bg-[#331A15]">Send Message</button>
         </fieldset>
       </form>
         </div>

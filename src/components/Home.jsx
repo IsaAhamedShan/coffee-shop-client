@@ -101,7 +101,7 @@ const Home = () => {
           Follow on Instagram
         </h3>
       </div>
-      <div className="flex flex-wrap justify-center items-center gap-8">
+      <div className="flex flex-wrap justify-center items-center gap-8 py-8">
         {coffeeImage?.map(eachData => (
           <img
             key={eachData?.key}

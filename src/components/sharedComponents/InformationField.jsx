@@ -48,7 +48,7 @@ const InformationField = () => {
       });
   };
   return (
-    <div className="bg-[#F4F3F0]">
+    <div className="bg-[#F4F3F0] max-w-7xl m-auto h-screen">
       <Link to="/"><button className="font-rancho text-2xl py-8 text-[#331A15]">Back to Home</button></Link>
       <form
         className="py-8"
@@ -56,6 +56,7 @@ const InformationField = () => {
           handleSubmit
         }
       >
+        <p className="text-3xl text-center text-[#331A15] pb-20 font-rancho">Add Coffee</p>
         <div className="grid grid-cols-2 gap-6">
           <div className="[&>*]:pb-3">
             <div className=" flex flex-col gap-3  ">
