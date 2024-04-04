@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
     const cart = [...cartItem];
     cart.push(_id);
     setCartItem(cart);
-    console.log(cartItem);
+    // console.log(cartItem);
   };
   const googleProvider = new GoogleAuthProvider();
   const logInWithGoogle = () => {

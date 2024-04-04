@@ -1,18 +1,23 @@
+import axios from "axios";
+import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../providers/AuthProvider";
 import {
   deleteItemFromLocalStorage,
+  getItem,
   getTotalCartValue,
 } from "./coffeeCartLocalStorage";
 import useCart from "./hooks/useCart";
 import CoffeeCartCard from "./sharedComponents/CoffeeCartCard";
 const Cart = () => {
-  const { cartItem } = useContext(AuthContext);
+  const { cartItem, user } = useContext(AuthContext);
   const [cart, refetch] = useCart();
   // console.log(cartItem);
   const [filteredData, setFilteredData] = useState([]);
-
+  let addedToDbSuccess = () => toast.success("Ordered Successfully");
+  let unsuccessful = () => toast.error("Couldn't Order Item.Try Again");
   const [total, setTotal] = useState(getTotalCartValue());
   // console.log(total)
   let handleDeleteCartItem = _id => {
@@ -31,7 +36,42 @@ const Cart = () => {
       }
     });
   };
+  let goToCheckout = () => {
+    let coffeeCartItems = getItem();
+    // console.log("🚀 ~ goToCheckout ~ coffeeCartItems:", coffeeCartItems)
+    let totalValue = getTotalCartValue();
+    let coffeeCartItemsObj = {};
+    for (let i = 0; i < coffeeCartItems.length; i++) {
+      coffeeCartItemsObj[coffeeCartItems[i]] =
+        (coffeeCartItemsObj[coffeeCartItems[i]] || 0) + 1;
+    }
+    let userCheckOut = {
+      email: user?.email,
+      CheckOutDate: format(new Date(), "MM/dd/yyyy"),
+      purchasedItems: coffeeCartItemsObj,
+      checkoutTotal: totalValue,
+    };
+    axios
+      .post("http://localhost:5000/saveCart", userCheckOut)
+      .then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          addedToDbSuccess();
+          localStorage.setItem("coffeeCart", "");
+          localStorage.setItem("totalValue",JSON.stringify(0));
+          refetch()
+        } else {
+          unsuccessful();
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        unsuccessful();
+      });
+    // console.log(userCheckOut);
 
+    // console.log("🚀 ~ goToCheckout ~ totalValue:", totalValue)
+  };
 
   useEffect(() => {
     fetch("http://localhost:5000/coffee")
@@ -51,9 +91,10 @@ const Cart = () => {
 
   console.log("filterData: ", filteredData);
   return (
-    <div className="">
+    <div>
+      <Toaster position="bottom-right" reverseOrder={false}></Toaster>
       <div className="flex justify-center items-center">
-        <p className="font-bold pt-4 md:pt-6 lg:pt-8 md:text-xl lg:text-3xl text-black">
+        <p className="font-bold pt-4 md:pt-6 lg:pt-8 md:text-xl lg:text-3xl text-[#1F0E0B] font-rancho">
           My Cart
         </p>
       </div>
@@ -67,81 +108,44 @@ const Cart = () => {
                 <CoffeeCartCard
                   key={eachItem._id}
                   eachItem={eachItem}
-                  setTotal ={setTotal}
+                  setTotal={setTotal}
                   handleDeleteCartItem={handleDeleteCartItem}
                 ></CoffeeCartCard>
               ))}
           </table>
         </div>
 
-        {/* <div className="col-span-1 p-8 flex justify-end ">
-          <div className="bg-[#e7e7e7] h-min p-8 rounded-md">
-            <h1 className="text-2xl mb-8 text-black">Order Summery</h1>
-            <div>
-              <p className="py-4">Total Amount: {total}</p>
-              <button className="btn btn-outline btn-md">PLACE ORDER</button>
-            </div>
-          </div>
-        </div> */}
         <div className="col-span-1 p-4 flex justify-end ">
           <div className=" flex flex-col h-min max-w-md p-6 space-y-4 divide-y sm:w-96 sm:p-10 divide-gray-700 dark:divide-gray-300 bg-gray-900 dark:bg-gray-50 text-gray-100 dark:text-gray-800">
-            <h2 className="text-2xl font-semibold">Order items</h2>
+            <h2 className="text-2xl font-semibold">Order Summery</h2>
             <ul className="flex flex-col pt-4 space-y-2">
-              <li className="flex items-start justify-between">
-                <h3>
-                  Hard taco, chicken
-                  <span className="text-sm text-violet-400 dark:text-violet-600">
-                    x3
-                  </span>
-                </h3>
-                <div className="text-right">
-                  <span className="block">$7.50</span>
-                </div>
-              </li>
-              <li className="flex items-start justify-between">
-                <h3>
-                  Hard taco, beef
-                  <span className="text-sm text-violet-400 dark:text-violet-600">
-                    x3
-                  </span>
-                </h3>
-                <div className="text-right">
-                  <span className="block">$8.25</span>
-                </div>
-              </li>
-              <li className="flex items-start justify-between">
-                <h3>
-                  Curly fries
-                  <span className="text-sm text-violet-400 dark:text-violet-600">
-                    x1
-                  </span>
-                </h3>
-                <div className="text-right">
-                  <span className="block">$1.75</span>
-                </div>
-              </li>
-              <li className="flex items-start justify-between">
-                <h3>
-                  Large soda
-                  <span className="text-sm text-violet-400 dark:text-violet-600">
-                    x2
-                  </span>
-                </h3>
-                <div className="text-right">
-                  <span className="block">$4.00</span>
-                </div>
-              </li>
+              <span className="font-semibold">
+                Sub Total: ${total.toFixed(2)}
+              </span>
+            </ul>
+            <ul className="flex flex-col pt-4 space-y-2">
+              <span className="font-semibold">
+                Vat(5%): ${(total * 1.05 - total).toFixed(2)}
+              </span>
+            </ul>
+            <ul className="flex flex-col pt-4 space-y-2">
+              <span className="font-semibold">
+                Shipping Cost (3%): ${(total * 1.03 - total).toFixed(2)}
+              </span>
             </ul>
 
             <div className="pt-4 space-y-2">
               <div className="space-y-6">
                 <div className="flex justify-between">
-                  <span>Total</span>
-                  <span className="font-semibold">${total}</span>
+                  <span className="font-bold">Total</span>
+                  <span className="font-semibold">
+                    ${(total * 1.08).toFixed(2)}
+                  </span>
                 </div>
                 <button
                   type="button"
                   className="w-full py-2 font-semibold border rounded bg-violet-400 dark:bg-violet-600 text-gray-900 dark:text-gray-50 border-violet-400 dark:border-violet-600"
+                  onClick={() => goToCheckout()}
                 >
                   Go to checkout
                 </button>
