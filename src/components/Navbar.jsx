@@ -9,7 +9,7 @@ const Navbar = () => {
   const handleLogOut = () =>
     logOut()
       .then(successLogOut => {
-        console.log(successLogOut);
+        // console.log(successLogOut);
         setSignInSuccess(false);
       })
       .catch(error => console.log(error));
@@ -18,7 +18,7 @@ const Navbar = () => {
   }, [user]);
   const navList = (
     <>
-      <li className="px-2 ">
+      <li className="px-2">
         <NavLink to="/">
           <p className="font-raleway ">Home</p>
         </NavLink>

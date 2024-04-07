@@ -2,6 +2,7 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../providers/AuthProvider";
 import {
@@ -14,12 +15,11 @@ import CoffeeCartCard from "./sharedComponents/CoffeeCartCard";
 const Cart = () => {
   const { cartItem, user } = useContext(AuthContext);
   const [cart, refetch] = useCart();
-  // console.log(cartItem);
   const [filteredData, setFilteredData] = useState([]);
+  const navigate = useNavigate();
   let addedToDbSuccess = () => toast.success("Ordered Successfully");
   let unsuccessful = () => toast.error("Couldn't Order Item.Try Again");
   const [total, setTotal] = useState(getTotalCartValue());
-  // console.log(total)
   let handleDeleteCartItem = _id => {
     Swal.fire({
       title: "Are you sure?",
@@ -58,8 +58,9 @@ const Cart = () => {
         if (res.status === 200) {
           addedToDbSuccess();
           localStorage.setItem("coffeeCart", "");
-          localStorage.setItem("totalValue",JSON.stringify(0));
-          refetch()
+          localStorage.setItem("totalValue", JSON.stringify(0));
+          refetch();
+          navigate("/");
         } else {
           unsuccessful();
         }
@@ -68,9 +69,6 @@ const Cart = () => {
         console.log(err);
         unsuccessful();
       });
-    // console.log(userCheckOut);
-
-    // console.log("🚀 ~ goToCheckout ~ totalValue:", totalValue)
   };
 
   useEffect(() => {

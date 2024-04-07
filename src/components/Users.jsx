@@ -4,10 +4,17 @@ import Swal from "sweetalert2";
 const Users = () => {
   // const {handleDeleteUser} = useContext(AuthContext)
   const usersData = useLoaderData();
+  const [user, setUser] = useState([]);
+  const [admin, setAdmin] = useState([]);
   const [userList, setUserList] = useState([]);
+  console.log(usersData);
   useEffect(() => {
     setUserList(usersData);
+    setAdmin(usersData.filter(item => item.admin === "true"));
+    setUser(usersData.filter(item => item.admin !== "true"));
   }, [usersData]);
+ 
+  console.table(user);
   const handleDeleteUser = _id => {
     Swal.fire({
       title: "Are you sure?",
@@ -32,7 +39,7 @@ const Users = () => {
                 icon: "success",
               });
             }
-            setUserList(userList.filter(eachData => eachData._id !== _id));
+            setUser(prev=> prev.filter(eachData => eachData._id !== _id));
           })
           .catch(error => console.log(error));
       }
@@ -42,6 +49,56 @@ const Users = () => {
   console.log(usersData);
   return (
     <div className="overflow-x-auto bg-[#F4F3F0] my-20 ">
+      <div>
+        <p className="text-3xl text-center text-[#331A15] font-rancho mb-10">
+          Admin
+        </p>
+      </div>
+      <table className="table max-w-7xl mx-auto bg-[#e7e7e7]">
+        {/* head */}
+        <thead>
+          <tr className="text-black">
+            <th></th>
+            <th>Email</th>
+            <th>Creation Time</th>
+            <th>Last Login</th>
+            <th>User Buying Details</th>
+            {/* <th>Delete</th> */}
+          </tr>
+        </thead>
+        <tbody className="">
+          {admin.map((eachData, index) => (
+            <tr key={eachData._id} className="bg-[#e7e7e7] my-4">
+              <th>{index + 1}</th>
+              <td>{eachData.email}</td>
+              <td>{eachData.creationTime}</td>
+              <td>{eachData.lastSignInTime || null}</td>
+              <td>
+                <Link to={`/invoiceHistory`}>
+                  <button className="btn btn-outline" onClick={() => {}}>
+                    Details
+                  </button>
+                </Link>
+              </td>
+              {/* <td>
+                <button
+                  className="btn btn-outline"
+                  onClick={() => {
+                    handleDeleteUser(eachData._id);
+                  }}
+                >
+                  Delete User
+                </button>
+              </td> */}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div>
+        <p className="text-3xl text-center text-[#331A15] font-rancho my-10">
+          User
+        </p>
+      </div>
       <table className="table max-w-7xl mx-auto bg-[#e7e7e7]">
         {/* head */}
         <thead>
@@ -55,14 +112,14 @@ const Users = () => {
           </tr>
         </thead>
         <tbody>
-          {userList.map((eachData, index) => (
+          {user.map((eachData, index) => (
             <tr key={eachData._id} className="bg-[#e7e7e7] my-4">
               <th>{index + 1}</th>
               <td>{eachData.email}</td>
               <td>{eachData.creationTime}</td>
               <td>{eachData.lastSignInTime || null}</td>
               <td>
-                <Link to={`/invoice-history/${eachData._id}`}>
+                <Link to={`/invoiceHistory`}>
                   <button className="btn btn-outline" onClick={() => {}}>
                     Details
                   </button>
